@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # The Local LLM Engine
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-engine
+    volumes:
+      - ./ollama_data:/root/.ollama  # Persist downloaded models
+    ports:
+      - "11434:11434"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Your FinTech Agent Application
+  agent-app:
+    build: .
+    container_name: fintech-agents
+    volumes:
+      - ./app:/app       # Live code reloading
+      - ./data:/app/data # Persistent vector data
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434 # Point LangChain to the Ollama container

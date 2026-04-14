@@ -1,0 +1,8 @@
+langchain
+langchain-community
+langgraph
+langsmith
+chromadb
+yfinance
+pandas
+jupyter # helpful for local testing
