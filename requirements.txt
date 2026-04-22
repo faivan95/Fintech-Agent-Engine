@@ -6,3 +6,5 @@ chromadb
 yfinance
 pandas
 jupyter # helpful for local testing
+psycopg2-binary
+pgvector
