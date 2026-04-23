@@ -9,3 +9,8 @@ jupyter # helpful for local testing
 psycopg2-binary
 pgvector
 langchain-ollama
+langgraph-checkpoint-postgres
+psycopg-pool
+psycopg[binary]
+streamlit
+plotly

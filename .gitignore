@@ -214,3 +214,17 @@ __marimo__/
 # Database and Vector Store Volumes
 data/
 ollama_data/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# Docker & Database
+data/
+postgres_data/
+*.log
+
+# Secrets (Crucial!)
+.env

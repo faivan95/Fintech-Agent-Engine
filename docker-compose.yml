@@ -28,6 +28,9 @@ services:
       - ollama
     environment:
       - OLLAMA_HOST=http://ollama:11434 # Point LangChain to the Ollama container
+    ports:
+      - "8501:8501" # Exposes the Streamlit web server
+    
 
   # PostgreSQL Database with pgvector extension
   postgres-db:
