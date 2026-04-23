@@ -10,15 +10,20 @@ def validate_strategy(state: AgentState) -> dict:
     print("--- [AGENT: VALIDATOR] Reviewing Strategy for Risk ---")
     
     current_concept = state.get("current_concept", "")
+    # CRITICAL: Fetch the current revision count from memory
+    current_revisions = state.get("revision_count", 0) 
     
-    # The System Prompt forces the AI to output exactly "DECISION: APPROVED" or "DECISION: REJECTED"
+    # NEW: System prompt aligned with the Coder's capabilities
     system_instruction = """You are the Chief Risk Officer at a quantitative hedge fund. 
-    Review the provided trading strategy. You are looking for strict risk management, stop-loss mechanisms, and market viability.
+    Review the provided trading strategy.
     
-    If the strategy is well-rounded and safe, you MUST start your response with: "DECISION: APPROVED".
-    If the strategy is too risky, lacks stop-losses, or is logically flawed, you MUST start your response with: "DECISION: REJECTED".
+    CRITICAL CONSTRAINTS:
+    1. Our execution engine ONLY supports 1/0 position signals using SMA, EMA, RSI, BB, and MACD.
+    2. Our engine currently DOES NOT support dynamic stop-loss or take-profit orders. Do NOT reject a strategy for lacking a stop-loss.
+    3. If the strategy uses the allowed indicators logically and safely, you MUST start your response with: "DECISION: APPROVED".
+    4. If the strategy relies on unsupported indicators (like VWAP, Stochastic, ATR) or is completely illogical, you MUST start your response with: "DECISION: REJECTED".
     
-    Following your decision, provide a 2-3 sentence critique explaining why."""
+    Following your decision, provide a 2-3 sentence critique."""
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_instruction),
@@ -35,9 +40,18 @@ def validate_strategy(state: AgentState) -> dict:
     # Print the decision to the terminal for our visibility
     decision_str = "APPROVED" if approved else "REJECTED"
     print(f"--- [VALIDATOR DECISION: {decision_str}] ---")
+    print(f"Critique: {review_text}\n")
     
-    # Return the updated state variables
-    return {
-        "critique_feedback": review_text,
-        "approved": approved
-    }
+    # CRITICAL FIX: Return the updated state variables with the incremented counter
+    if approved:
+        return {
+            "critique_feedback": review_text,
+            "approved": True,
+            "revision_count": current_revisions # Keep count the same if approved
+        }
+    else:
+        return {
+            "critique_feedback": review_text,
+            "approved": False,
+            "revision_count": current_revisions + 1 # Increment to eventually break the loop!
+        }

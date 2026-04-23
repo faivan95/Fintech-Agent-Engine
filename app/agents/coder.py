@@ -22,11 +22,12 @@ def write_code(state: AgentState) -> dict:
     - 'MACD', 'MACD_Signal', 'MACD_Hist'
     
     CRITICAL PANDAS SYNTAX RULES:
-    1. DO NOT INVENT COLUMN NAMES. Use ONLY the exact columns listed above.
-    2. You MUST use np.where() for your logic. You must start your code directly with: df['Signal'] = np.where(...)
-    3. If combining multiple conditions with & or |, you MUST wrap EVERY individual condition in its own parentheses.
-    4. ABSOLUTELY NO COMMENTS. Do not use the '#' symbol. Write pure, silent code.
-    5. NO FUNCTIONS OR LAMBDAS. Do not use 'def' or 'lambda'. Do not assign your logic to a custom variable.
+    1. DO NOT INVENT COLUMNS OR VARIABLES. Use ONLY the exact columns listed above. Do not use undeclared variables like 'volume_threshold'.
+    2. STRICT BINARY OUTPUT: Your np.where condition MUST return 1 for a signal and 0 for no signal. NEVER use strings like 'Buy' or 'Sell'.
+    3. You MUST use np.where() for your logic. You must start your code directly with: df['Signal'] = np.where(...)
+    4. If combining multiple conditions with & or |, you MUST wrap EVERY individual condition in its own parentheses.
+    5. ABSOLUTELY NO COMMENTS. Do not use the '#' symbol. Write pure, silent code.
+    6. NO FUNCTIONS OR LAMBDAS. Do not use 'def' or 'lambda'. Do not assign your logic to a custom variable.
     
     Output ONLY valid Python code. No explanations. No imports."""
 
@@ -104,6 +105,9 @@ def run_backtest():
 {indented_ai_logic}
         # --- AI GENERATED SIGNAL LOGIC END ---
         # ==========================================
+
+        if df['Signal'].sum() == 0:
+            raise ValueError("SILENT FAILURE: Your logic generated ZERO buy signals over the entire year. The conditions are too strict or mathematically contradictory. Loosen your entry rules.")
 
         # 3. Portfolio Simulation & Analytics
         df['Returns'] = df['Close'].pct_change()

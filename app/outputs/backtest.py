@@ -44,20 +44,12 @@ def run_backtest():
 
         # ==========================================
         # --- AI GENERATED SIGNAL LOGIC START ---
-        import numpy as np
-
-        # Assuming 'df' is the DataFrame with all necessary columns already calculated
-
-        AMD_MomentumBollingerCross = lambda df: (np.where(
-            ((df['RSI_14'] > 70) & # Overbought condition based on RSI
-             (df['Close'].shift() < df['SMA_20']) & # Price was below SMA_20 in the previous period, indicating a potential uptrend start.
-             ((df['Close'] - df['Open']) > 0) | # Check for bullish engulfing pattern near upper Bollinger Band (BB_Upper).
-             (df['Close'].shift() < df['SMA_20']) & # Price was below SMA_20 in the previous period, indicating a potential uptrend start.
-             ((df['Low'] - df['Open']) > 0) | # Check for bullish engulfing pattern near lower Bollinger Band (BB_Lower).
-             (((df['Close'].shift() < df['SMA_20']) & (df['Close'] >= df['SMA_50'])) | # Price respects SMA/EMA crossover with an uptrend confirmation.
-              ((df['Low'].shift() > df['SMA_50']) & (df['Low'] <= df['BB_Lower']))), 1, 0))
+        df['Signal'] = np.where(((df['SMA_20'] > df['EMA_50']) & (df['RSI_14'] < 70) & (df['Volume'] > df['Volume'].mean())), 1, 0)
         # --- AI GENERATED SIGNAL LOGIC END ---
         # ==========================================
+
+        if df['Signal'].sum() == 0:
+            raise ValueError("SILENT FAILURE: Your logic generated ZERO buy signals over the entire year. The conditions are too strict or mathematically contradictory. Loosen your entry rules.")
 
         # 3. Portfolio Simulation & Analytics
         df['Returns'] = df['Close'].pct_change()
@@ -79,7 +71,7 @@ def run_backtest():
 
         # Export data for the Streamlit UI to plot
         df[['Close', 'Portfolio_Value']].to_csv('/app/outputs/equity_curve.csv')
-        
+
         print("\n--- QUANTITATIVE TEAR SHEET ---")
         print(f"Final Portfolio Value : ${final_value:.2f}")
         print(f"Total Return          : ${total_return:.2f}%")

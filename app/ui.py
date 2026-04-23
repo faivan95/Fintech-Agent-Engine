@@ -75,11 +75,11 @@ elif st.session_state.app_state == "review":
         
         col1, col2, col3 = st.columns([1, 1, 2])
         with col1:
-            if st.button("✅ Approve & Write Code", use_container_width=True):
+            if st.button("✅ Approve & Write Code", width="stretch"):
                 st.session_state.app_state = "running_code"
                 st.rerun()
         with col2:
-            if st.button("❌ Reject & Reset", use_container_width=True):
+            if st.button("❌ Reject & Reset", width="stretch"):
                 st.session_state.app_state = "input"
                 st.session_state.thread_id = None
                 st.rerun()
