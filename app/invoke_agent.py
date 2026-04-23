@@ -1,12 +1,34 @@
 import os
+import sys
 from graph import app_graph
 
 if __name__ == "__main__":
-    print("Sending request to the Multi-Agent Graph...\n")
+    print("\n=== FinTech Agent Engine: Strategy Generator ===")
     
-    # Define the initial state (The user's request)
+    # Define the path to the input file
+    input_file_path = "/app/user_query.md"
+    
+    # 1. Check if the file exists
+    if not os.path.exists(input_file_path):
+        print(f"[ERROR] Input file not found at {input_file_path}")
+        print("Please create 'user_query.md' in your app folder with your strategy request.")
+        sys.exit(1)
+        
+    # 2. Read the user query from the file
+    with open(input_file_path, "r", encoding="utf-8") as f:
+        user_input = f.read().strip()
+        
+    # 3. Safety check: prevent empty inputs
+    if not user_input:
+        print(f"[ERROR] {input_file_path} is empty. Please add a prompt and try again.")
+        sys.exit(1)
+
+    print(f"\n[SYSTEM] Read query from file: '{user_input[:50]}...'")
+    print("[SYSTEM] Sending request to the Multi-Agent Graph. Please wait...")
+    
+    # 4. Inject the dynamic input into the initial state
     initial_state = {
-        "user_query": "Create a low-risk momentum trading strategy specifically for large-cap tech stocks like Apple and Microsoft.",
+        "user_query": user_input,
         "current_concept": "",
         "simulation_results": "",
         "market_context": "",
@@ -15,20 +37,19 @@ if __name__ == "__main__":
         "approved": False
     }
 
-    # Execute the LangGraph workflow
+    # 5. Execute the LangGraph workflow
     final_state = app_graph.invoke(initial_state)
     concept = final_state["current_concept"]
     
+    # 6. Print the results to the terminal
     print("\n================ FINAL STRATEGY CONCEPT ================\n")
     print(concept)
     print("\n========================================================")
 
-    # --- NEW OUTPUT LOGIC ---
-    # Define an outputs folder inside our app directory
+    # 7. Save the output to a Markdown document
     output_dir = "/app/outputs"
-    os.makedirs(output_dir, exist_ok=True) # Creates the folder if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True) 
     
-    # Save the output as a Markdown document
     file_path = os.path.join(output_dir, "latest_strategy.md")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write("# Autonomous Trading Strategy Concept\n\n")

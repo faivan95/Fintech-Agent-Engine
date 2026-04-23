@@ -1,0 +1,1 @@
+Create a low-risk momentum trading strategy specifically for large-cap tech stocks like Apple, AMD and Microsoft. Focus on mean reversion.
