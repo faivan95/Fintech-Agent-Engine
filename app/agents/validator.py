@@ -1,5 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
-from llm import llm
+from llm import llm_creative
 from state import AgentState
 
 def validate_strategy(state: AgentState) -> dict:
@@ -25,7 +25,7 @@ def validate_strategy(state: AgentState) -> dict:
         ("human", "Strategy to review:\n{concept}")
     ])
     
-    chain = prompt | llm
+    chain = prompt | llm_creative
     response = chain.invoke({"concept": current_concept})
     review_text = response.content
     

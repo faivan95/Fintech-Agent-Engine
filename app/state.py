@@ -24,3 +24,12 @@ class AgentState(TypedDict):
     
     # The final decision from the Critic (True = Output to user, False = Route back to Generator)
     approved: bool
+
+    # Stores the generated Python script
+    backtest_code: str  
+
+    # Stores the Python traceback
+    execution_error: str 
+    
+    # Prevents infinite coding loops
+    code_revisions: int 

@@ -1,5 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
-from llm import llm
+from llm import llm_creative
 from state import AgentState
 
 def generate_strategy(state: AgentState) -> dict:
@@ -38,7 +38,7 @@ def generate_strategy(state: AgentState) -> dict:
     ])
     
     # Chain the prompt to our local Phi-3 model
-    chain = prompt | llm
+    chain = prompt | llm_creative
     
     # Execute the LLM call
     response = chain.invoke({"query": user_query})
