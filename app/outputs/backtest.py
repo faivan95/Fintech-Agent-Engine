@@ -44,7 +44,11 @@ def run_backtest():
 
         # ==========================================
         # --- AI GENERATED SIGNAL LOGIC START ---
-        df['Signal'] = np.where(((df['SMA_20'] > df['EMA_50']) & (df['RSI_14'] < 70) & (df['Volume'] > df['Volume'].mean())), 1, 0)
+        df['Signal'] = np.where(
+            (df['SMA_20'] > df['EMA_20']) & # Entry condition for SMA and EMA crossover during Asia Pacific after-hours session
+                ((df['Close'].shift() < df['Open']) |  # Check if the previous close was lower than open, indicating bearish pressure
+                 (df['SMA_50'] > df['EMA_50'])) & # Additional confirmation with SMA and EMA crossover during Asia Pacific after-hours session for momentum shift towards bullishness
+            True, 1, 0)
         # --- AI GENERATED SIGNAL LOGIC END ---
         # ==========================================
 

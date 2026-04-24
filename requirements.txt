@@ -1,16 +1,21 @@
+# AI Framework & Orchestration
 langchain
 langchain-community
+langchain-ollama
 langgraph
+
+# Observability
 langsmith
-chromadb
+
+# Quantitative Engine
 yfinance
 pandas
-jupyter # helpful for local testing
-psycopg2-binary
-pgvector
-langchain-ollama
+
+# Database & State (HITL)
 langgraph-checkpoint-postgres
 psycopg-pool
 psycopg[binary]
+
+# Frontend UI
 streamlit
 plotly
