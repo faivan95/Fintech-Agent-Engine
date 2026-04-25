@@ -14,6 +14,32 @@ An autonomous, containerized multi-agent AI system that ideates, codes, self-hea
 
 https://github.com/user-attachments/assets/272b8e8d-1c04-462f-9f52-8996c0e84959
 
+### Usage Workflow
+Input: Type a strategy concept into the Streamlit sidebar (e.g., "Write a momentum strategy using RSI and MACD crossovers").
+
+Ideation: The Generator Agent formulates the mathematical entry/exit rules.
+
+HITL Review: The graph pauses. The UI displays the proposed strategy for human approval.
+
+Code & Self-Heal: The Coder Agent writes the Pandas logic. If it fails, it enters a recursive 5-attempt self-healing loop.
+
+Execution: The yfinance engine backtests the code and renders the interactive equity curve.
+
+---
+
+## 📊 Analytics & Outputs (The Tear Sheet)
+Upon successful compilation, the engine outputs a Quantitative Tear Sheet with the following metrics:
+
+Final Portfolio Value: The absolute dollar value of a $10,000 initial capital investment after a 1-year backtest.
+
+Total Return (%): The net percentage gain or loss.
+
+Sharpe Ratio: The risk-adjusted return. A Sharpe ratio > 1.0 indicates strong returns relative to the daily volatility the strategy endured.
+
+Maximum Drawdown (%): The largest single drop from peak to trough in the portfolio's value. Evaluates the strategy's worst-case risk scenario.
+
+---
+
 ### Project Vision & Progression
 The initial scope of this project explored using a Retrieval-Augmented Generation (RAG) microservice (via ChromaDB) to feed financial literature to the LLM. However, during early prototyping, it became clear that the primary bottleneck was not *knowledge retrieval*, but *execution stability and deterministic state memory*.
 
