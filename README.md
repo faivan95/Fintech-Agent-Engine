@@ -15,6 +15,19 @@ An autonomous, containerized multi-agent AI system that ideates, codes, self-hea
 
 https://github.com/user-attachments/assets/272b8e8d-1c04-462f-9f52-8996c0e84959
 
+### Usage Workflow
+Input: Type a strategy concept into the Streamlit sidebar (e.g., "Write a momentum strategy using RSI and MACD crossovers").
+
+Ideation: The Generator Agent formulates the mathematical entry/exit rules.
+
+HITL Review: The graph pauses. The UI displays the proposed strategy for human approval.
+
+Code & Self-Heal: The Coder Agent writes the Pandas logic. If it fails, it enters a recursive 5-attempt self-healing loop.
+
+Execution: The yfinance engine backtests the code and renders the interactive equity curve.
+
+---
+
 ## 📊 Analytics & Outputs (The Tear Sheet)
 Upon successful compilation, the engine outputs a Quantitative Tear Sheet with the following metrics:
 
@@ -41,19 +54,6 @@ By inspecting the LangSmith traces, we monitor the health of the autonomous loop
 * **Execution Latency & Token Usage:** Monitors the inference speed and context-window saturation of the local LLM to prevent context overpower and memory leaks.
 
 > **<img width="375" height="467" alt="Trace Tree" src="https://github.com/user-attachments/assets/6bdb8b4c-5931-42c0-81b1-babf773d0bb7" />**
-
----
-
-### Usage Workflow
-Input: Type a strategy concept into the Streamlit sidebar (e.g., "Write a momentum strategy using RSI and MACD crossovers").
-
-Ideation: The Generator Agent formulates the mathematical entry/exit rules.
-
-HITL Review: The graph pauses. The UI displays the proposed strategy for human approval.
-
-Code & Self-Heal: The Coder Agent writes the Pandas logic. If it fails, it enters a recursive 5-attempt self-healing loop.
-
-Execution: The yfinance engine backtests the code and renders the interactive equity curve.
 
 ---
 
